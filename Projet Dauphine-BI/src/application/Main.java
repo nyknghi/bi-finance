@@ -49,23 +49,24 @@ public class Main {
 			// On affine les fichiers ainsi obtenus (en gardant la première et la dernière colonne), et on les stocke en mémoire
 			CsvFile fileActionCsv = new CsvFile(fileAction);
 			CsvFile fileBenchmarkCsv = new CsvFile(fileBenchmark);
-			HashMap<XMLGregorianCalendar, Double> datas = fileActionCsv.getHashData();
+			HashMap<XMLGregorianCalendar, Double> datasAction = fileActionCsv.getHashData();
+			HashMap<XMLGregorianCalendar, Double> datasBenchmark = fileBenchmarkCsv.getHashData();
 			
+			// On récupère la liste des étapes
 			ArrayList<XMLGregorianCalendar> stepsDates = new ArrayList<XMLGregorianCalendar>();
 			stepsDates = Calculation.fixSteps(readxml.getInput().getStartdate(), urlyahoo.getEnddate(), 7);
-			/*for(XMLGregorianCalendar c : stepsDates){
-				System.out.println(c);
-			}*/
 			
+			// On récupère les données pour l'action
+			TreeMap<XMLGregorianCalendar, Double> valuesAction = new TreeMap<XMLGregorianCalendar, Double>();
+			valuesAction = Calculation.findStepsValues(stepsDates, datasAction, 7);
 			
-			/*TreeMap<XMLGregorianCalendar, Double> values = new TreeMap<XMLGregorianCalendar, Double>();
-			values = Calculation.findStepsValues(stepsDates, datas, 7);
+			// puis pour le Benchmark
+			TreeMap<XMLGregorianCalendar, Double> valuesBenchmark = new TreeMap<XMLGregorianCalendar, Double>();
+			valuesBenchmark = Calculation.findStepsValues(stepsDates, datasBenchmark, 7);
 			
-			for(XMLGregorianCalendar c : stepsDates){
-				System.out.println(c + " " + values.get(c));
-			}
+	
 			
-			i++;*/
+			i++;
 			break;
 			
 		}

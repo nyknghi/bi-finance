@@ -21,9 +21,12 @@ public class Calculation {
 			Duration duration = DatatypeFactory.newInstance().newDuration(step*24*3600*1000);
 			
 			while(enddate.toGregorianCalendar().compareTo(date.toGregorianCalendar())> 0){
-				date.add(duration);
-				stepDates.add(date);
+				XMLGregorianCalendar date2 = (XMLGregorianCalendar) stepDates.get(stepDates.size()-1).clone();
+				date2.add(duration);
+				stepDates.add(date2);
+				date = (XMLGregorianCalendar) date2.clone();
 			}
+			stepDates.remove(stepDates.size()-1);
 			return stepDates;		
 			
 		} catch (DatatypeConfigurationException e) {
@@ -52,9 +55,10 @@ public class Calculation {
 						duration = DatatypeFactory.newInstance().newDuration(-24*3600*1000);
 						stepDates.add(duration); // On retire un jour à la date actuelle
 						if( datas.get(stepDates) != null){ // On vérifie si elle est dans la HashMap
+							double tmpvalue = datas.get(stepDates);
 							duration = DatatypeFactory.newInstance().newDuration(-cpt*24*3600*1000); // On retourne à la date initiale
 							stepDates.add(duration);
-							values.put(stepDates, datas.get(stepDates)); // Si oui, on entre la valeur correspondante
+							values.put(stepDates, tmpvalue); // Si oui, on entre la valeur correspondante
 							vFound = true;
 						}
 					} catch (DatatypeConfigurationException e) {
@@ -67,6 +71,21 @@ public class Calculation {
 			
 		}
 		return values;
+	}
+	
+	
+	public static TreeMap<XMLGregorianCalendar, Double> makeEvolution( HashMap<XMLGregorianCalendar, Double> values){
 		
+		CompareDates cDates = new CompareDates();
+		TreeMap<XMLGregorianCalendar, Double> valuesNew = new TreeMap<XMLGregorianCalendar, Double>(cDates);
+		//double FirstValueTmp = values.;
+		double LastValueTmp;
+		
+		for(XMLGregorianCalendar step : values.keySet()){
+			LastValueTmp = values.get(step);
+			valuesNew.put(step, values.get(step));
+		}
+		
+		return null;
 	}
 }

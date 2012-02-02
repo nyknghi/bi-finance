@@ -1,4 +1,4 @@
-<input startdate="2008-01-07">
+<input startdate="2011-01-07">
 	<stock 	benchId = "^FCHI"
 			benchmark = "CAC40"
 			country = "FRANCE"

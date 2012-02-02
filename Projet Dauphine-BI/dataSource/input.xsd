@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="input">
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element ref="stock"/>
+      </xs:sequence>
+      <xs:attribute name="startdate" use="required" type="xs:date"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="stock">
+    <xs:complexType>
+      <xs:attribute name="benchId" use="required" type="xs:string"/>
+      <xs:attribute name="benchmark" use="required" type="xs:string"/>
+      <xs:attribute name="country" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="industry" use="required" type="xs:string"/>
+      <xs:attribute name="name" use="required" type="xs:string"/>
+      <xs:attribute name="sector" use="required" type="xs:string"/>
+      <xs:attribute name="zone" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

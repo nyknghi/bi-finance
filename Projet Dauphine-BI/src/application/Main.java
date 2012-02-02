@@ -21,7 +21,6 @@ import entity.Stock;
 
 public class Main {
 
-	private static final String FILE_NAME = "dataSource/bdd.csv";
 	public static void main (String[] args){
 		
 		// On lit et on charge les données du fichier input.xml

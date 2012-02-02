@@ -60,6 +60,14 @@ public class UrlYahoo {
 		+"&ignore=.csv";
 	}
 
+	public XMLGregorianCalendar getEnddate() {
+		return enddate;
+	}
+
+	public void setEnddate(XMLGregorianCalendar enddate) {
+		this.enddate = enddate;
+	}
+
 	public String getUrlAction() {
 		return urlAction;
 	}

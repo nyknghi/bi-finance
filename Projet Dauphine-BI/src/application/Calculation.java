@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -12,10 +13,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 public class Calculation {
 
 	//public static void compareDates()
-	public static ArrayList fixSteps(XMLGregorianCalendar startdate, XMLGregorianCalendar enddate, int step){
-		ArrayList stepDates = new ArrayList(); // Liste des étapes 
+	public static ArrayList<XMLGregorianCalendar> fixSteps(XMLGregorianCalendar startdate, XMLGregorianCalendar enddate, int step){
+		ArrayList<XMLGregorianCalendar> stepDates = new ArrayList<XMLGregorianCalendar>(); // Liste des étapes 
 		stepDates.add(startdate);
-		XMLGregorianCalendar date = startdate;
+		XMLGregorianCalendar date = (XMLGregorianCalendar) startdate.clone();
 		try {
 			Duration duration = DatatypeFactory.newInstance().newDuration(step*24*3600*1000);
 			
@@ -23,17 +24,49 @@ public class Calculation {
 				date.add(duration);
 				stepDates.add(date);
 			}
-			return stepDates;
-			
-			
-			
-			
+			return stepDates;		
 			
 		} catch (DatatypeConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
+		
+	}
+	
+	public static TreeMap<XMLGregorianCalendar, Double> findStepsValues(ArrayList<XMLGregorianCalendar> stepsDates, HashMap<XMLGregorianCalendar, Double> datas, int step){
+		
+		CompareDates cDates = new CompareDates();
+		TreeMap<XMLGregorianCalendar, Double> values = new TreeMap<XMLGregorianCalendar, Double>(cDates);
+		
+		for(XMLGregorianCalendar stepDates : stepsDates){
+			if( datas.get(stepDates) != null){
+				values.put(stepDates, datas.get(stepDates));
+			}
+			else{
+				boolean vFound = false;
+				int cpt = -1;
+				while(vFound == false && cpt > -10){
+					Duration duration;
+					try {
+						duration = DatatypeFactory.newInstance().newDuration(-24*3600*1000);
+						stepDates.add(duration); // On retire un jour à la date actuelle
+						if( datas.get(stepDates) != null){ // On vérifie si elle est dans la HashMap
+							duration = DatatypeFactory.newInstance().newDuration(-cpt*24*3600*1000); // On retourne à la date initiale
+							stepDates.add(duration);
+							values.put(stepDates, datas.get(stepDates)); // Si oui, on entre la valeur correspondante
+							vFound = true;
+						}
+					} catch (DatatypeConfigurationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					cpt--; // On boucle jusqu'à 10 fois
+				}
+			}
+			
+		}
+		return values;
 		
 	}
 }

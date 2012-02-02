@@ -2,11 +2,14 @@ package application;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -36,46 +39,33 @@ public class Main {
 			File fileBenchmark = new File("dataSource/Benchmark"+String.valueOf(i)+".csv");
 			
 			// On récupère les adresses correspondantes sur le site yahoo.finance dans notre objet urlyahoo
-			UrlYahoo urlyahoo = new UrlYahoo(stock, readxml.getInput().getStartdate());
+			UrlYahoo urlyahoo = new UrlYahoo(stock, readxml.getInput().getStartdate());			
 			
 			// On télécharge les fichiers
 			UrlHelper u = null;
 			u.downloadFile(urlyahoo.getUrlAction(), fileAction);
-			u.downloadFile(urlyahoo.getUrlBenchmark(), fileBenchmark);			
+			u.downloadFile(urlyahoo.getUrlBenchmark(), fileBenchmark);		
 			
 			// On affine les fichiers ainsi obtenus (en gardant la première et la dernière colonne), et on les stocke en mémoire
 			CsvFile fileActionCsv = new CsvFile(fileAction);
 			CsvFile fileBenchmarkCsv = new CsvFile(fileBenchmark);
-			Set cles = fileActionCsv.getHashData().keySet();
-			Iterator it = cles.iterator();
-			while(it.hasNext()){
-				XMLGregorianCalendar cle = (XMLGregorianCalendar) it.next();
-				double valeur = fileActionCsv.getHashData().get(cle);
-				System.out.println(cle.toString() + " "+ valeur);
-				break;
+			HashMap<XMLGregorianCalendar, Double> datas = fileActionCsv.getHashData();
+			
+			ArrayList<XMLGregorianCalendar> stepsDates = new ArrayList<XMLGregorianCalendar>();
+			stepsDates = Calculation.fixSteps(readxml.getInput().getStartdate(), urlyahoo.getEnddate(), 7);
+			/*for(XMLGregorianCalendar c : stepsDates){
+				System.out.println(c);
+			}*/
+			
+			
+			/*TreeMap<XMLGregorianCalendar, Double> values = new TreeMap<XMLGregorianCalendar, Double>();
+			values = Calculation.findStepsValues(stepsDates, datas, 7);
+			
+			for(XMLGregorianCalendar c : stepsDates){
+				System.out.println(c + " " + values.get(c));
 			}
 			
-			/*for(int j = 0; j < fileActionCsv.getNewData().size();j++){
-				System.out.println(fileActionCsv.getNewData().get(j)[0]+" "+fileActionCsv.getNewData().get(j)[1]);				
-			}*/
-			i++;
-			
-			/*Date date = new Date(); 
-			XMLGregorianCalendar xmlCalendar;
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			
-			String dat = dateFormat.format(date);
-			try {
-				xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(dat);
-				System.out.println(xmlCalendar);
-				
-				
-			} catch (DatatypeConfigurationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-			
-			
+			i++;*/
 			break;
 			
 		}

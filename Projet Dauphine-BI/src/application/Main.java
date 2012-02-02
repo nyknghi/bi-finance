@@ -32,8 +32,8 @@ public class Main {
 		for (Stock stock : readxml.getInput().getStock())
 		{
 			// On crée deux fichiers csv, un pour l'action, et un pour le benchmark
-			File fileAction = new File("Action"+String.valueOf(i)+".csv");
-			File fileBenchmark = new File("Benchmark"+String.valueOf(i)+".csv");
+			File fileAction = new File("dataSource/Action"+String.valueOf(i)+".csv");
+			File fileBenchmark = new File("dataSource/Benchmark"+String.valueOf(i)+".csv");
 			
 			// On récupère les adresses correspondantes sur le site yahoo.finance dans notre objet urlyahoo
 			UrlYahoo urlyahoo = new UrlYahoo(stock, readxml.getInput().getStartdate());

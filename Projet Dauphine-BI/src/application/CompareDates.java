@@ -8,7 +8,7 @@ public class CompareDates implements Comparator {
 
 	int retval;
 
-	// 
+	 
 	public int compare(Object o1, Object o2) {
 		
 		if(((XMLGregorianCalendar) o1).toGregorianCalendar().compareTo( ((XMLGregorianCalendar) o2).toGregorianCalendar()) > 0){

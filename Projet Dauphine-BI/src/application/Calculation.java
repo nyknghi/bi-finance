@@ -12,7 +12,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 public class Calculation {
 
-	//public static void compareDates()
+	
 	public static ArrayList<XMLGregorianCalendar> fixSteps(XMLGregorianCalendar startdate, XMLGregorianCalendar enddate, int step){
 		ArrayList<XMLGregorianCalendar> stepDates = new ArrayList<XMLGregorianCalendar>(); // Liste des étapes 
 		stepDates.add(startdate);
@@ -78,7 +78,7 @@ public class Calculation {
 		
 		CompareDates cDates = new CompareDates();
 		TreeMap<XMLGregorianCalendar, Double> valuesNew = new TreeMap<XMLGregorianCalendar, Double>(cDates);
-		//double FirstValueTmp = values.;
+		
 		double LastValueTmp;
 		
 		for(XMLGregorianCalendar step : values.keySet()){

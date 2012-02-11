@@ -88,4 +88,10 @@ public class Calculation {
 		
 		return null;
 	}
+	
+	
+	public static TreeMap<XMLGregorianCalendar, Double> convertDatas(){
+		
+		return null;
+	}
 }

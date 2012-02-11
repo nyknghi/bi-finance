@@ -64,7 +64,9 @@ public class Main {
 			TreeMap<XMLGregorianCalendar, Double> valuesBenchmark = new TreeMap<XMLGregorianCalendar, Double>();
 			valuesBenchmark = Calculation.findStepsValues(stepsDates, datasBenchmark, 7);
 			
-	
+			// On a donc les données hebdomadaires pour l'action et le benchmark
+			// Maintenant, on souhaite les transformer en gardant leur évolution depuis une base de 100
+			
 			
 			i++;
 			break;

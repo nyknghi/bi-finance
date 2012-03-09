@@ -67,6 +67,17 @@ public class Main {
 			// On a donc les données hebdomadaires pour l'action et le benchmark
 			// Maintenant, on souhaite les transformer en gardant leur évolution depuis une base de 100
 			
+			TreeMap<XMLGregorianCalendar, Double> valuesActionAdjusted = new TreeMap<XMLGregorianCalendar, Double>();
+			TreeMap<XMLGregorianCalendar, Double> valuesBenchmarkAdjusted = new TreeMap<XMLGregorianCalendar, Double>();
+			valuesActionAdjusted = Calculation.changeValues(valuesAction);
+			valuesBenchmarkAdjusted = Calculation.changeValues(valuesBenchmark);
+			
+			// Indicateurs
+
+			
+			
+			
+			
 			
 			i++;
 			break;

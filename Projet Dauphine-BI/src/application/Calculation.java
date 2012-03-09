@@ -74,24 +74,56 @@ public class Calculation {
 	}
 	
 	
-	public static TreeMap<XMLGregorianCalendar, Double> makeEvolution( HashMap<XMLGregorianCalendar, Double> values){
+	public static TreeMap<XMLGregorianCalendar, Double> changeValues (TreeMap<XMLGregorianCalendar, Double> datas ){
 		
 		CompareDates cDates = new CompareDates();
-		TreeMap<XMLGregorianCalendar, Double> valuesNew = new TreeMap<XMLGregorianCalendar, Double>(cDates);
+		TreeMap<XMLGregorianCalendar, Double> datasAdjusted = new TreeMap<XMLGregorianCalendar, Double>(cDates);
+		int cpt = 0;
+		double lastValue = 0.0;
 		
-		double LastValueTmp;
-		
-		for(XMLGregorianCalendar step : values.keySet()){
-			LastValueTmp = values.get(step);
-			valuesNew.put(step, values.get(step));
+		for(XMLGregorianCalendar date : datas.keySet()){
+			if(cpt < 1){
+				datasAdjusted.put(date, 100.0);
+				lastValue = datas.get(date);
+				cpt++;
+			}
+			else{
+				datasAdjusted.put(date, 100.0*datas.get(date)/lastValue);
+				lastValue = datas.get(date);
+			}
+			
 		}
 		
-		return null;
+		return datasAdjusted;
+	}
+		
+	public static double IndicatorPerfA(TreeMap<XMLGregorianCalendar, Double> datas, double param){
+		return Math.pow(datas.get(datas.size()-1)/datas.get(datas.size()-1-param*4),365.0/param*4.0*7.0)-1;
 	}
 	
-	
-	public static TreeMap<XMLGregorianCalendar, Double> convertDatas(){
+	public static double Moyenne(TreeMap<XMLGregorianCalendar, Double> datas, double param){
+		double res = 0.0;
 		
-		return null;
+		for(int i = datas.size()-1; i < datas.size()-1-param*4;i--){
+			res += datas.get(i);
+		}		
+		return res/param*4;
+	}
+	
+	public static double IndicatorVol(TreeMap<XMLGregorianCalendar, Double> datas, int param){
+		double res = 0.0;
+		for(int i = datas.size()-1; i < datas.size()-1-param*4;i--){
+			res += Math.pow(Math.log(datas.get(i)/datas.get(i-1))-Moyenne(datas, param), 2);
+		}
+		return Math.sqrt(res/(param*4-1)*52.0);
+	}
+	
+	public static double IndicatorTE(TreeMap<XMLGregorianCalendar, Double> datas, int param){
+		double res = 0.0;
+		
+		// On calcule la moyenne de la performance relative
+		
+		
+		return res;
 	}
 }

@@ -1,29 +1,17 @@
 package application;
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import java.util.TreeMap;
 
-import java.net.URL;
-import java.net.URLConnection;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-
 
 import entity.Stock;
 
 
 public class Main {
 
+	@SuppressWarnings("unchecked")
 	public static void main (String[] args){
 		
 		// On lit et on charge les données du fichier input.xml
@@ -42,9 +30,8 @@ public class Main {
 			UrlYahoo urlyahoo = new UrlYahoo(stock, readxml.getInput().getStartdate());			
 			
 			// On télécharge les fichiers
-			UrlHelper u = null;
-			u.downloadFile(urlyahoo.getUrlAction(), fileAction);
-			u.downloadFile(urlyahoo.getUrlBenchmark(), fileBenchmark);		
+			UrlHelper.downloadFile(urlyahoo.getUrlAction(), fileAction);
+			UrlHelper.downloadFile(urlyahoo.getUrlBenchmark(), fileBenchmark);		
 			
 			// On affine les fichiers ainsi obtenus (en gardant la première et la dernière colonne), et on les stocke en mémoire
 			CsvFile fileActionCsv = new CsvFile(fileAction);
@@ -74,20 +61,20 @@ public class Main {
 			valuesBenchmarkAdjusted = Calculation.changeValues(valuesBenchmark);
 			
 			// Indicateurs
-			double param = 1.0; // En mois
+			double param = 2.0; // En mois
 			double performance = Calculation.IndicatorPerfA(valuesActionAdjusted, param);
 			double volatilite = Calculation.IndicatorVol(valuesActionAdjusted, param);
 			double trackingError = Calculation.IndicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			//double informationRatio = Calculation.IndicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			//double beta = Calculation.IndicatorBeta(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			//double alpha = Calculation.IndicatorAlpha(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			double informationRatio = Calculation.IndicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			double beta = Calculation.IndicatorBeta(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			double alpha = Calculation.IndicatorAlpha(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
 			
-			System.out.println(performance);
-			System.out.println(volatilite);
-			System.out.println(trackingError);
-			/*System.out.println(informationRatio);
-			System.out.println(beta);
-			System.out.println(alpha);*/
+			System.out.println("Performance : " + performance);
+			System.out.println("Volatilite : " + volatilite);
+			System.out.println("Tracking Error : " + trackingError);
+			System.out.println("Information Ratio : " + informationRatio);
+			System.out.println("Beta : " + beta);
+			System.out.println("Alpha : " + alpha);
 			i++;
 			break;
 			

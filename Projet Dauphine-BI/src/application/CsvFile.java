@@ -1,9 +1,6 @@
 package application;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,9 +28,6 @@ public class CsvFile {
 		this.hashData = hashData;
 	}
 
-	private CsvFile(){
-	}
-	
 	public CsvFile(File file){
 		this.file = file;
 		
@@ -60,10 +54,8 @@ public class CsvFile {
 			try {
 				hashData.put(DatatypeFactory.newInstance().newXMLGregorianCalendar(line[0]), Double.parseDouble(line[line.length-1]));
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (DatatypeConfigurationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			String[] newLine = new String[2];

@@ -1,9 +1,7 @@
 package application;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -33,7 +31,6 @@ public class UrlYahoo {
 		try {
 			enddate = DatatypeFactory.newInstance().newXMLGregorianCalendar(dat);
 		} catch (DatatypeConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+@SuppressWarnings("rawtypes")
 public class CompareDates implements Comparator {
 
 	int retval;

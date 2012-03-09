@@ -1,10 +1,8 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TreeMap;
-import java.lang.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -31,13 +29,13 @@ public class Calculation {
 			return stepDates;		
 			
 		} catch (DatatypeConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static TreeMap<XMLGregorianCalendar, Double> findStepsValues(ArrayList<XMLGregorianCalendar> stepsDates, HashMap<XMLGregorianCalendar, Double> datas, int step){
 		
 		CompareDates cDates = new CompareDates();
@@ -63,7 +61,6 @@ public class Calculation {
 							vFound = true;
 						}
 					} catch (DatatypeConfigurationException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					cpt--; // On boucle jusqu'à 10 fois
@@ -75,6 +72,7 @@ public class Calculation {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public static TreeMap<XMLGregorianCalendar, Double> changeValues (TreeMap<XMLGregorianCalendar, Double> datas ){
 		
 		CompareDates cDates = new CompareDates();
@@ -100,28 +98,28 @@ public class Calculation {
 	
 	// Calcule la performance hebdomadaire d'un fonds 
 	public static double IndicatorPerfA(double v0, double v1){
-		return Math.pow(v1/v0,365.0/7.0)-1;
+		//return Math.pow(v1/v0,365.0/7.0)-1;
+		return Math.log(v1/v0)-1;
 	}
 		
 	// Calcule l'indicateur de performance d'un fonds sur une période donnée
-	  public static double IndicatorPerfA(TreeMap<XMLGregorianCalendar, Double> datas, double param){
-          XMLGregorianCalendar startDate = (XMLGregorianCalendar) datas.lastKey().clone();
-          try {
-                  Duration duration = DatatypeFactory.newInstance().newDuration((long) (-24*3600*1000*7));
-                  XMLGregorianCalendar endDate = (XMLGregorianCalendar) startDate.clone();
-                  for(int i=0; i < (int) param*4;i++){
-                          endDate.add(duration);
-                  }
-                  if(!datas.containsKey(endDate)){
-                          System.out.println("Problème de date !");
-                  }
-                  return Math.pow(datas.get(startDate)/datas.get(endDate),365.0/param*4.0*7.0)-1;
-          } catch (DatatypeConfigurationException e) {
-                  // TODO Auto-generated catch block
-                  e.printStackTrace();
-                  return 0.0;
-          }      
-	  }
+	public static double IndicatorPerfA(TreeMap<XMLGregorianCalendar, Double> datas, double param){
+		XMLGregorianCalendar startDate = (XMLGregorianCalendar) datas.lastKey().clone();
+		try {
+			Duration duration = DatatypeFactory.newInstance().newDuration((long) (-24*3600*1000*7));
+			XMLGregorianCalendar endDate = (XMLGregorianCalendar) startDate.clone();
+			for(int i=0; i < (int) param*4;i++){
+				endDate.add(duration);
+			}
+			if(!datas.containsKey(endDate)){
+				System.out.println("Problème de date !");
+			}
+			return Math.pow(datas.get(startDate)/datas.get(endDate),365.0/(param*4.0*7.0)) - 1;
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace();
+			return 0.0;
+		}      
+	}
 	
 	// Calcule la moyenne d'un fonds sur une période donnée
 	public static double Moyenne(TreeMap<XMLGregorianCalendar, Double> datas, double param){
@@ -138,7 +136,6 @@ public class Calculation {
 			}		
 			return res/(param*4);
 		} catch (DatatypeConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0.0;
@@ -159,7 +156,6 @@ public class Calculation {
 			}
 			return res/(param*4);
 		} catch (DatatypeConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0.0;
 		}
@@ -180,9 +176,8 @@ public class Calculation {
 				res += Math.pow(Math.log(datas.get(startDate)/datas.get(endDate))-MoyennePerfH(datas, param), 2);
 				startDate.add(duration);
 			}
-			return Math.sqrt(res/(param*4-1)*52.0);
+			return Math.sqrt(52*res/(param*4-1));
 		} catch (DatatypeConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0.0;
@@ -207,10 +202,12 @@ public class Calculation {
 					endDate.add(duration);
 					perfMA += IndicatorPerfA(datas.get(endDate), datas.get(startDate));
 					perfMB += IndicatorPerfA(datasB.get(endDate), datasB.get(startDate));
+					//System.out.println("perfMA = " + perfMA + " perfMB = " + perfMB);
 					startDate.add(duration);
 				}
-				perfM = (perfMB -perfMA)/(param*4);
-				System.out.println("PerfM = "+perfM);
+				perfM = (perfMA -perfMB)/(param*4);
+				//System.out.println("PerfM = "+perfM);
+				
 				// On effectue ensuite la différence de chaque performance de l'indice par rapport à la moyenne
 				startDate = (XMLGregorianCalendar) datas.lastKey().clone(); // Réinitialisation
 				endDate = (XMLGregorianCalendar) startDate.clone();
@@ -219,11 +216,10 @@ public class Calculation {
 					double perfAi = IndicatorPerfA(datas.get(endDate), datas.get(startDate)) - IndicatorPerfA(datasB.get(endDate), datasB.get(startDate)); // Performance relative actuelle
 					res += Math.pow(perfAi - perfM,2);
 					startDate.add(duration);
-					System.out.println("perfAi = "+perfAi);
+					//System.out.println("perfAi = "+perfAi);
 				}
-				return Math.sqrt(res/(param*4)*52);
+				return Math.sqrt(52*res/(param*4-1));
 			} catch (DatatypeConfigurationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return 0.0;
@@ -270,7 +266,6 @@ public class Calculation {
 			return cov/var;
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0.0;
 		}

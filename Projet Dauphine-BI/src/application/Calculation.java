@@ -104,25 +104,24 @@ public class Calculation {
 	}
 		
 	// Calcule l'indicateur de performance d'un fonds sur une période donnée
-	public static double IndicatorPerfA(TreeMap<XMLGregorianCalendar, Double> datas, double param){
-		XMLGregorianCalendar startDate = (XMLGregorianCalendar) datas.lastKey().clone();
-		try {
-			Duration duration = DatatypeFactory.newInstance().newDuration((long) (-24*3600*1000*7));
-			XMLGregorianCalendar endDate = (XMLGregorianCalendar) startDate.clone();
-			for(int i=0; i < (int) param*4;i++){
-				endDate.add(duration);
-			}
-			if(!datas.containsKey(endDate)){
-				System.out.println("Problème de date !");
-			}
-			return Math.pow(datas.get(startDate)/datas.get(endDate),365.0/param*4.0*7.0)-1;
-		} catch (DatatypeConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return 0.0;
-		}
-		
-	}
+	  public static double IndicatorPerfA(TreeMap<XMLGregorianCalendar, Double> datas, double param){
+          XMLGregorianCalendar startDate = (XMLGregorianCalendar) datas.lastKey().clone();
+          try {
+                  Duration duration = DatatypeFactory.newInstance().newDuration((long) (-24*3600*1000*7));
+                  XMLGregorianCalendar endDate = (XMLGregorianCalendar) startDate.clone();
+                  for(int i=0; i < (int) param*4;i++){
+                          endDate.add(duration);
+                  }
+                  if(!datas.containsKey(endDate)){
+                          System.out.println("Problème de date !");
+                  }
+                  return Math.pow(datas.get(startDate)/datas.get(endDate),365.0/param*4.0*7.0)-1;
+          } catch (DatatypeConfigurationException e) {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+                  return 0.0;
+          }      
+	  }
 	
 	// Calcule la moyenne d'un fonds sur une période donnée
 	public static double Moyenne(TreeMap<XMLGregorianCalendar, Double> datas, double param){

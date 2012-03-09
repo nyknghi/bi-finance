@@ -55,10 +55,6 @@ public class Main {
 			// On récupère la liste des étapes
 			ArrayList<XMLGregorianCalendar> stepsDates = new ArrayList<XMLGregorianCalendar>();
 			stepsDates = Calculation.fixSteps(readxml.getInput().getStartdate(), urlyahoo.getEnddate(), 7);
-			for(XMLGregorianCalendar date : stepsDates){
-				System.out.println(date);
-			}
-			System.out.println("\n\n");
 			
 			CompareDates cDates = new CompareDates(); // Comparateur de dates
 			// On récupère les données pour l'action
@@ -78,14 +74,20 @@ public class Main {
 			valuesBenchmarkAdjusted = Calculation.changeValues(valuesBenchmark);
 			
 			// Indicateurs
-			double param = 2.0; // En mois
+			double param = 1.0; // En mois
 			double performance = Calculation.IndicatorPerfA(valuesActionAdjusted, param);
-			/*double volatilite = Calculation.IndicatorVol(valuesActionAdjusted, param);
+			double volatilite = Calculation.IndicatorVol(valuesActionAdjusted, param);
 			double trackingError = Calculation.IndicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			double informationRatio = Calculation.IndicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			double beta = Calculation.IndicatorBeta(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			double alpha = Calculation.IndicatorAlpha(valuesActionAdjusted, valuesBenchmarkAdjusted, param);*/
+			//double informationRatio = Calculation.IndicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			//double beta = Calculation.IndicatorBeta(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			//double alpha = Calculation.IndicatorAlpha(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
 			
+			System.out.println(performance);
+			System.out.println(volatilite);
+			System.out.println(trackingError);
+			/*System.out.println(informationRatio);
+			System.out.println(beta);
+			System.out.println(alpha);*/
 			i++;
 			break;
 			

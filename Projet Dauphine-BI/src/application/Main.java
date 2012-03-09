@@ -55,29 +55,36 @@ public class Main {
 			// On récupère la liste des étapes
 			ArrayList<XMLGregorianCalendar> stepsDates = new ArrayList<XMLGregorianCalendar>();
 			stepsDates = Calculation.fixSteps(readxml.getInput().getStartdate(), urlyahoo.getEnddate(), 7);
+			for(XMLGregorianCalendar date : stepsDates){
+				System.out.println(date);
+			}
+			System.out.println("\n\n");
 			
+			CompareDates cDates = new CompareDates(); // Comparateur de dates
 			// On récupère les données pour l'action
-			TreeMap<XMLGregorianCalendar, Double> valuesAction = new TreeMap<XMLGregorianCalendar, Double>();
+			TreeMap<XMLGregorianCalendar, Double> valuesAction = new TreeMap<XMLGregorianCalendar, Double>(cDates);
 			valuesAction = Calculation.findStepsValues(stepsDates, datasAction, 7);
 			
 			// puis pour le Benchmark
-			TreeMap<XMLGregorianCalendar, Double> valuesBenchmark = new TreeMap<XMLGregorianCalendar, Double>();
+			TreeMap<XMLGregorianCalendar, Double> valuesBenchmark = new TreeMap<XMLGregorianCalendar, Double>(cDates);
 			valuesBenchmark = Calculation.findStepsValues(stepsDates, datasBenchmark, 7);
 			
 			// On a donc les données hebdomadaires pour l'action et le benchmark
 			// Maintenant, on souhaite les transformer en gardant leur évolution depuis une base de 100
 			
-			TreeMap<XMLGregorianCalendar, Double> valuesActionAdjusted = new TreeMap<XMLGregorianCalendar, Double>();
-			TreeMap<XMLGregorianCalendar, Double> valuesBenchmarkAdjusted = new TreeMap<XMLGregorianCalendar, Double>();
+			TreeMap<XMLGregorianCalendar, Double> valuesActionAdjusted = new TreeMap<XMLGregorianCalendar, Double>(cDates);
+			TreeMap<XMLGregorianCalendar, Double> valuesBenchmarkAdjusted = new TreeMap<XMLGregorianCalendar, Double>(cDates);
 			valuesActionAdjusted = Calculation.changeValues(valuesAction);
 			valuesBenchmarkAdjusted = Calculation.changeValues(valuesBenchmark);
 			
 			// Indicateurs
-
-			
-			
-			
-			
+			double param = 2.0; // En mois
+			double performance = Calculation.IndicatorPerfA(valuesActionAdjusted, param);
+			/*double volatilite = Calculation.IndicatorVol(valuesActionAdjusted, param);
+			double trackingError = Calculation.IndicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			double informationRatio = Calculation.IndicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			double beta = Calculation.IndicatorBeta(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			double alpha = Calculation.IndicatorAlpha(valuesActionAdjusted, valuesBenchmarkAdjusted, param);*/
 			
 			i++;
 			break;

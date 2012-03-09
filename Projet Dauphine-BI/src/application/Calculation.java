@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TreeMap;
+import java.lang.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -96,11 +97,34 @@ public class Calculation {
 		
 		return datasAdjusted;
 	}
+	
+	// Calcule la performance hebdomadaire d'un fonds 
+	public static double IndicatorPerfA(double v0, double v1){
+		return Math.pow(v1/v0,365.0/7.0)-1;
+	}
 		
+	// Calcule l'indicateur de performance d'un fonds sur une période donnée
 	public static double IndicatorPerfA(TreeMap<XMLGregorianCalendar, Double> datas, double param){
-		return Math.pow(datas.get(datas.size()-1)/datas.get(datas.size()-1-param*4),365.0/param*4.0*7.0)-1;
+		XMLGregorianCalendar startDate = (XMLGregorianCalendar) datas.lastKey().clone();
+		System.out.println(startDate);
+		try {
+			Duration duration = DatatypeFactory.newInstance().newDuration((long) (-24*3600*1000*7*param*4));
+			XMLGregorianCalendar endDate = (XMLGregorianCalendar) startDate.clone();
+			endDate.add(duration);
+			System.out.println(endDate);
+			if(datas.containsKey(endDate)){
+				System.out.println("Ok");
+			}
+			return Math.pow(datas.get(startDate)/datas.get(endDate),365.0/param*4.0*7.0)-1;
+		} catch (DatatypeConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0.0;
+		}
+		
 	}
 	
+	// Calcule la moyenne d'un fonds sur une période donnée
 	public static double Moyenne(TreeMap<XMLGregorianCalendar, Double> datas, double param){
 		double res = 0.0;
 		
@@ -110,7 +134,8 @@ public class Calculation {
 		return res/param*4;
 	}
 	
-	public static double IndicatorVol(TreeMap<XMLGregorianCalendar, Double> datas, int param){
+	// Calcule l'indicateur de volatilité d'un fonds sur une période donnée
+	public static double IndicatorVol(TreeMap<XMLGregorianCalendar, Double> datas, double param){
 		double res = 0.0;
 		for(int i = datas.size()-1; i < datas.size()-1-param*4;i--){
 			res += Math.pow(Math.log(datas.get(i)/datas.get(i-1))-Moyenne(datas, param), 2);
@@ -118,12 +143,79 @@ public class Calculation {
 		return Math.sqrt(res/(param*4-1)*52.0);
 	}
 	
-	public static double IndicatorTE(TreeMap<XMLGregorianCalendar, Double> datas, int param){
-		double res = 0.0;
+	// Calcule l'indicateur de tracking error sur une période donnée
+	public static double IndicatorTE(TreeMap<XMLGregorianCalendar, Double> datas, TreeMap<XMLGregorianCalendar, Double> datasB, double param){
 		
-		// On calcule la moyenne de la performance relative
+		try {
+			CheckDates(datas, datasB);// On vérifie que les TreeMap correspondent
+			
+			// On calcule la moyenne de la performance relative
+			double res = 0.0;
+			double perfMA = 0.0, perfMB = 0.0, perfM = 0.0;
+			
+			for(int i = datas.size()-1; i < datas.size()-1-param*4;i--){
+				perfMA += IndicatorPerfA(datas.get(i-1), datas.get(i));
+				perfMB += IndicatorPerfA(datasB.get(i-1), datasB.get(i));
+			}
+			perfM = (perfMB -perfMA)/(param*4);
+			
+			// On effectue ensuite la différence de chaque performance de l'indice par rapport à la moyenne
+			for(int i = datas.size()-1; i < datas.size()-1-param*4;i--){
+				double perfAi = IndicatorPerfA(datas.get(i-1), datas.get(i)) - IndicatorPerfA(datasB.get(i-1), datasB.get(i)); // Performance relative actuelle
+				res += Math.pow(perfAi - perfM,2);
+			}
+			return Math.sqrt(res/(param*4-1)*52);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0.0;
+		}
+	}
+	
+	public static void CheckDates(TreeMap<XMLGregorianCalendar, Double> datas, TreeMap<XMLGregorianCalendar, Double> datasB) throws Exception {
+	
+		if(datas.size() != datasB.size()){
+			throw new Exception("Les deux TreeMap ne correspondent pas !");
+		}
+		for(XMLGregorianCalendar date : datas.keySet()){
+			if(!datasB.containsKey(date)){
+				throw new Exception("Les deux TreeMap ne correspondent pas !");
+			}
+		}
+	}
+	
+	public static double IndicatorRatioInformation(TreeMap<XMLGregorianCalendar, Double> datas, TreeMap<XMLGregorianCalendar, Double> datasB, double param){
+		return (IndicatorPerfA(datas, param) - IndicatorPerfA(datasB, param))/IndicatorTE(datas, datasB, param);
+	}
+	
+	public static double Covariance(TreeMap<XMLGregorianCalendar, Double> datas, TreeMap<XMLGregorianCalendar, Double> datasB, double param){
+		double moyA = Moyenne(datas, param);
+		double moyB = Moyenne(datasB, param);
+		double moyAB = 0.0;
+		for(int i = datas.size()-1; i < datas.size()-1-param*4;i--){
+			moyAB += datas.get(i)*datasB.get(i);
+		}
+		moyAB = moyAB/(param*4);
 		
-		
-		return res;
+		return moyAB - moyA*moyB;
+	}
+	
+	public static double IndicatorBeta(TreeMap<XMLGregorianCalendar, Double> datas, TreeMap<XMLGregorianCalendar, Double> datasB, double param){
+		try {
+			CheckDates(datas, datasB);
+			
+			double cov = Covariance(datas, datasB, param); // Calcul de la covariance
+			double var = Covariance(datasB, datasB, param); // Calcul de la variance
+			return cov/var;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0.0;
+		}
+	}
+	
+	public static double IndicatorAlpha(TreeMap<XMLGregorianCalendar, Double> datas, TreeMap<XMLGregorianCalendar, Double> datasB, double param){
+		return IndicatorPerfA(datas, param)-IndicatorBeta(datas, datasB, param)*IndicatorPerfA(datasB, param);	
 	}
 }

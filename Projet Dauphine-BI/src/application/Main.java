@@ -62,12 +62,12 @@ public class Main {
 			
 			// Indicateurs
 			double param = 2.0; // En mois
-			double performance = Calculation.IndicatorPerfA(valuesActionAdjusted, param);
-			double volatilite = Calculation.IndicatorVol(valuesActionAdjusted, param);
-			double trackingError = Calculation.IndicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			double informationRatio = Calculation.IndicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			double beta = Calculation.IndicatorBeta(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			double alpha = Calculation.IndicatorAlpha(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			double performance = Calculation.indicatorPerfA(valuesActionAdjusted, param);
+			double volatilite = Calculation.indicatorVol(valuesActionAdjusted, param);
+			double trackingError = Calculation.indicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			double informationRatio = Calculation.indicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			double beta = Calculation.indicatorBeta(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			double alpha = Calculation.indicatorAlpha(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
 			
 			System.out.println("Performance : " + performance);
 			System.out.println("Volatilite : " + volatilite);
@@ -76,7 +76,7 @@ public class Main {
 			System.out.println("Beta : " + beta);
 			System.out.println("Alpha : " + alpha);
 			i++;
-			break;
+			//break;
 			
 		}
 		

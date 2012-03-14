@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="output">
+		<xs:complexType>
+	      	<xs:sequence maxOccurs="unbounded">
+	        	<xs:element ref="stock"/>
+			</xs:sequence>
+		</xs:complexType>   
+	</xs:element>
+  
+	<xs:element name="stock">
+	  <xs:complexType>
+	    <xs:sequence maxOccurs="unbounded">
+	      <xs:element ref="prices" minOccurs="1" maxOccurs="1"/>
+	      <xs:element ref="indicators"/>
+	      <xs:element ref="trackingError"/>
+	      <xs:element ref="informationRatio"/>
+	    </xs:sequence>
+	    <xs:attribute name="benchId" use="required" type="xs:string"/>
+	    <xs:attribute name="benchmark" use="required" type="xs:string"/>
+	    <xs:attribute name="country" use="required" type="xs:string"/>
+	    <xs:attribute name="id" use="required" type="xs:string"/>
+	    <xs:attribute name="industry" use="required" type="xs:string"/>
+	    <xs:attribute name="name" use="required" type="xs:string"/>
+	    <xs:attribute name="sector" use="required" type="xs:string"/>
+	    <xs:attribute name="zone" use="required" type="xs:string"/>
+	  </xs:complexType>
+	</xs:element>
+  
+	<xs:element name="prices">
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element ref="obs"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="obs">
+		<xs:complexType>
+			<xs:attribute name="date"/>
+			<xs:attribute name="price"/>
+			<xs:attribute name="priceBench"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="indicators">
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element ref="indicator"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="indicator">
+		<xs:complexType>
+			<xs:attribute name="alpha"/>
+			<xs:attribute name="beta"/>
+			<xs:attribute name="perf"/>
+			<xs:attribute name="period"/>
+			<xs:attribute name="vol"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="trackingError">
+		<xs:complexType>
+			<xs:attribute name="te"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="informationRatio">
+		<xs:complexType>
+			<xs:attribute name="ir"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

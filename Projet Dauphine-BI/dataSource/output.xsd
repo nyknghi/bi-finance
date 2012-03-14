@@ -10,8 +10,8 @@
   
 	<xs:element name="stock">
 	  <xs:complexType>
-	    <xs:sequence maxOccurs="unbounded">
-	      <xs:element ref="prices" minOccurs="1" maxOccurs="1"/>
+	    <xs:sequence minOccurs="1" maxOccurs="1">
+	      <xs:element ref="prices"/>
 	      <xs:element ref="indicators"/>
 	      <xs:element ref="trackingError"/>
 	      <xs:element ref="informationRatio"/>

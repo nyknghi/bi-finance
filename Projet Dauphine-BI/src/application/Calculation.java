@@ -273,4 +273,6 @@ public class Calculation {
 	public static double indicatorAlpha(TreeMap<XMLGregorianCalendar, Double> datas, TreeMap<XMLGregorianCalendar, Double> datasB, double param){
 		return indicatorPerfA(datas, param)-indicatorBeta(datas, datasB, param)*indicatorPerfA(datasB, param);	
 	}
+	
+	
 }

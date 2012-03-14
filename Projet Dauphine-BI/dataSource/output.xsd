@@ -13,8 +13,6 @@
 	    <xs:sequence minOccurs="1" maxOccurs="1">
 	      <xs:element ref="prices"/>
 	      <xs:element ref="indicators"/>
-	      <xs:element ref="trackingError"/>
-	      <xs:element ref="informationRatio"/>
 	    </xs:sequence>
 	    <xs:attribute name="benchId" use="required" type="xs:string"/>
 	    <xs:attribute name="benchmark" use="required" type="xs:string"/>
@@ -37,9 +35,9 @@
 	
 	<xs:element name="obs">
 		<xs:complexType>
-			<xs:attribute name="date"/>
-			<xs:attribute name="price"/>
-			<xs:attribute name="priceBench"/>
+			<xs:attribute name="date" use="required" type="xs:date"/>
+			<xs:attribute name="price" use="required" type="xs:double"/>
+			<xs:attribute name="priceBench" use="required" type="xs:double"/>
 		</xs:complexType>
 	</xs:element>
 	
@@ -53,23 +51,14 @@
 	
 	<xs:element name="indicator">
 		<xs:complexType>
-			<xs:attribute name="alpha"/>
-			<xs:attribute name="beta"/>
-			<xs:attribute name="perf"/>
-			<xs:attribute name="period"/>
-			<xs:attribute name="vol"/>
+			<xs:attribute name="alpha" use="required" type="xs:double"/>
+			<xs:attribute name="beta" use="required" type="xs:double"/>
+			<xs:attribute name="perf" use="required" type="xs:double"/>
+			<xs:attribute name="period" use="required" type="xs:string"/>
+			<xs:attribute name="vol" use="required" type="xs:double"/>
+			<xs:attribute name="te" use="required" type="xs:double"/>
+			<xs:attribute name="ir" use="required" type="xs:double"/>
 		</xs:complexType>
 	</xs:element>
 	
-	<xs:element name="trackingError">
-		<xs:complexType>
-			<xs:attribute name="te"/>
-		</xs:complexType>
-	</xs:element>
-	
-	<xs:element name="informationRatio">
-		<xs:complexType>
-			<xs:attribute name="ir"/>
-		</xs:complexType>
-	</xs:element>
 </xs:schema>

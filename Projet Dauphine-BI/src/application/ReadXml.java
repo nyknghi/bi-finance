@@ -32,8 +32,8 @@ public class ReadXml {
 		return input;
 	}
 
-	public void setInput(Input Input) {
-		this.input = Input;
+	public void setInput(Input input) {
+		this.input = input;
 	}
 
 	public static File getResource (String fileName){

@@ -6,7 +6,13 @@ import java.util.TreeMap;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import entity.Stock;
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
+
+import entityOutput.Indicator;
+import entityOutput.Indicators;
+import entityOutput.Obs;
+import entityOutput.Output;
+import entityOutput.Prices;
 
 
 public class Main {
@@ -16,11 +22,11 @@ public class Main {
 		
 		// On lit et on charge les données du fichier input.xml
 		ReadXml readxml = new ReadXml();
-		
+		Output output = new Output();
 		
 		// Pour chaque stock
 		int i = 1;
-		for (Stock stock : readxml.getInput().getStock())
+		for (entity.Stock stock : readxml.getInput().getStock())
 		{
 			// On crée deux fichiers csv, un pour l'action, et un pour le benchmark
 			File fileAction = new File("dataSource/Action"+String.valueOf(i)+".csv");
@@ -60,25 +66,68 @@ public class Main {
 			valuesActionAdjusted = Calculation.changeValues(valuesAction);
 			valuesBenchmarkAdjusted = Calculation.changeValues(valuesBenchmark);
 			
-			// Indicateurs
-			double param = 2.0; // En mois
-			double performance = Calculation.indicatorPerfA(valuesActionAdjusted, param);
-			double volatilite = Calculation.indicatorVol(valuesActionAdjusted, param);
-			double trackingError = Calculation.indicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			double informationRatio = Calculation.indicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			double beta = Calculation.indicatorBeta(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-			double alpha = Calculation.indicatorAlpha(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
+			// Définition des périodes
+			ArrayList<Double> params = new ArrayList<Double>();
+			params.add(3.0);
+			params.add(6.0);
+			params.add(12.0);
 			
-			System.out.println("Performance : " + performance);
-			System.out.println("Volatilite : " + volatilite);
-			System.out.println("Tracking Error : " + trackingError);
-			System.out.println("Information Ratio : " + informationRatio);
-			System.out.println("Beta : " + beta);
-			System.out.println("Alpha : " + alpha);
+			// Pour chaque période, calcul des indicateurs
+			ArrayList<ResultatIndicators> results = new ArrayList<ResultatIndicators>();
+			for(double param : params){
+				results.add(new ResultatIndicators(valuesActionAdjusted, valuesBenchmarkAdjusted, param));
+				System.out.println("Performance : " + results.get(results.size()-1).getPerformance());
+				System.out.println("Volatilite : " + results.get(results.size()-1).getVolatilite());
+				System.out.println("Tracking Error : " + results.get(results.size()-1).getTrackingError());
+				System.out.println("Information Ratio : " + results.get(results.size()-1).getInformationRatio());
+				System.out.println("Beta : " + results.get(results.size()-1).getBeta());
+				System.out.println("Alpha : " + results.get(results.size()-1).getAlpha());
+			}
+			
+			entityOutput.Stock stockOut = new entityOutput.Stock();
+			Indicators indicators = new Indicators();
+			stockOut.setIndicators(indicators);
+			
+			stockOut.setBenchId(stock.getBenchId());
+			stockOut.setBenchmark(stock.getBenchmark());
+			stockOut.setCountry(stock.getCountry());
+			stockOut.setId(stock.getId());
+			stockOut.setIndustry(stock.getIndustry());
+			stockOut.setName(stock.getName());
+			stockOut.setSector(stock.getSector());
+			stockOut.setZone(stock.getZone());
+			
+			for(int j=0; j < params.size();j++){
+				Indicator indicator = new Indicator();
+				
+				indicator.setAlpha(results.get(j).getAlpha());
+				indicator.setBeta(results.get(j).getBeta());
+				indicator.setIr(results.get(j).getInformationRatio());
+				indicator.setPerf(results.get(j).getPerformance());
+				indicator.setPeriod(results.get(j).getPeriod());
+				indicator.setTe(results.get(j).getTrackingError());
+				indicator.setVol(results.get(j).getVolatilite());
+				
+				stockOut.getIndicators().getIndicator().add(indicator);
+			}
+			
+			Prices prices = new Prices();
+			stockOut.setPrices(prices);
+			for(XMLGregorianCalendar date : valuesActionAdjusted.keySet()){
+				Obs obs = new Obs();
+				obs.setDate(date);
+				obs.setPrice(valuesActionAdjusted.get(date));
+				obs.setPriceBench(valuesBenchmarkAdjusted.get(date));
+				stockOut.getPrices().getObs().add(obs);
+			}
+			output.getStock().add(stockOut);
 			i++;
-			//break;
 			
 		}
+		
+		// create JAXB context and instantiate marshaller		
+		WriteXML writexml = new WriteXML(output);
+
 		
 		
 		

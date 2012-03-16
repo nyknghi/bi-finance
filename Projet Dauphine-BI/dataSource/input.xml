@@ -18,17 +18,17 @@
 	<stock 	benchId = "^FCHI"
 			benchmark = "CAC40"
 			country = "FRANCE"
-			id = "KN.PA"
-			industry = "Money Center Banks"
-			name = "KN.PA"
-			sector = "Financial"
-			zone = "Europe"/>
-	<stock 	benchId = "^FCHI"
-			benchmark = "CAC40"
-			country = "FRANCE"
 			id = "LG.PA"
 			industry = "General Building Materials"
 			name = "LG.PA"
 			sector = "Industrial Goods"
+			zone = "Europe"/>
+	<stock 	benchId = "^FTSE"
+			benchmark = "FTSE 100"
+			country = "ENGLAND"
+			id = "BRBY.L"
+			industry = "Textile - Apparel Clothing"
+			name = "BRBY.L"
+			sector = "Consumer Goods"
 			zone = "Europe"/>
 </input>

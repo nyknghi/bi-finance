@@ -78,7 +78,6 @@ public class Main {
 				results.add(new ResultatIndicators(valuesActionAdjusted, valuesBenchmarkAdjusted, param));
 				System.out.println("Performance : " + results.get(results.size()-1).getPerformance());
 				System.out.println("Volatilite : " + results.get(results.size()-1).getVolatilite());
-				System.out.println("Tracking Error : " + results.get(results.size()-1).getTrackingError());
 				System.out.println("Information Ratio : " + results.get(results.size()-1).getInformationRatio());
 				System.out.println("Beta : " + results.get(results.size()-1).getBeta());
 				System.out.println("Alpha : " + results.get(results.size()-1).getAlpha());
@@ -105,11 +104,14 @@ public class Main {
 				indicator.setIr(results.get(j).getInformationRatio());
 				indicator.setPerf(results.get(j).getPerformance());
 				indicator.setPeriod(results.get(j).getPeriod());
-				indicator.setTe(results.get(j).getTrackingError());
 				indicator.setVol(results.get(j).getVolatilite());
 				
 				stockOut.getIndicators().getIndicator().add(indicator);
 			}
+			
+			double te = Calculation.indicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, 12.0);
+			indicators.setTe(te);
+			System.out.println("Tracking Error : " + te);
 			
 			Prices prices = new Prices();
 			stockOut.setPrices(prices);

@@ -16,16 +16,8 @@ public class ResultatIndicators {
 	private String period;
 	private double beta;
 	private double alpha;
-	private double trackingError;
 	private double informationRatio;
 	
-	public double getTrackingError() {
-		return trackingError;
-	}
-
-	public void setTrackingError(double trackingError) {
-		this.trackingError = trackingError;
-	}
 
 	public double getInformationRatio() {
 		return informationRatio;
@@ -113,7 +105,6 @@ public class ResultatIndicators {
 		this.volatilite = Calculation.indicatorVol(valuesActionAdjusted, param);
 		this.beta = Calculation.indicatorBeta(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
 		this.alpha = Calculation.indicatorAlpha(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-		this.trackingError = Calculation.indicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
 		this.informationRatio = Calculation.indicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
 		this.period = (int)param +"M";
 	}

@@ -9,9 +9,22 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+/**
+ * Traite et transforme les données passées en paramètres
+ * @author Administrator
+ *
+ */
 public class Calculation {
 
 	
+	/**
+	 * Définit la liste des jours qui serviront de référence (où on comparera les valeurs de l'indice 
+	 * et du Benchmark
+	 * @param startdate
+	 * @param enddate
+	 * @param step
+	 * @return
+	 */
 	public static ArrayList<XMLGregorianCalendar> fixSteps(XMLGregorianCalendar startdate, XMLGregorianCalendar enddate, int step){
 		ArrayList<XMLGregorianCalendar> stepDates = new ArrayList<XMLGregorianCalendar>(); // Liste des étapes 
 		stepDates.add(startdate);
@@ -35,13 +48,20 @@ public class Calculation {
 		
 	}
 	
+	/**
+	 * Sélectionne les valeurs de l'indice ou du benchmark passé en paramètre
+	 * selon la liste des étapes
+	 * @param stepsDates
+	 * @param datas
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
-	public static TreeMap<XMLGregorianCalendar, Double> findStepsValues(ArrayList<XMLGregorianCalendar> stepsDates, HashMap<XMLGregorianCalendar, Double> datas, int step){
+	public static TreeMap<XMLGregorianCalendar, Double> findStepsValues(ArrayList<XMLGregorianCalendar> stepsDates, HashMap<XMLGregorianCalendar, Double> datas){
 		
 		CompareDates cDates = new CompareDates();
 		TreeMap<XMLGregorianCalendar, Double> values = new TreeMap<XMLGregorianCalendar, Double>(cDates);
 		
-		for(XMLGregorianCalendar stepDates : stepsDates){
+		for(XMLGregorianCalendar stepDates : stepsDates){ // Penser à revenir ici
 			if( datas.get(stepDates) != null){
 				values.put(stepDates, datas.get(stepDates));
 			}

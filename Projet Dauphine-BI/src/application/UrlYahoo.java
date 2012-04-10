@@ -9,7 +9,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import entity.Stock;
 
-
+/**
+ * Permet de créer l'adresse où télécharger chaque stock de données en fonction de la date de départ
+ * @author Administrator
+ *
+ */
 public class UrlYahoo {
 
 	String urlAction = "http://ichart.yahoo.com/table.csv?s=";
@@ -44,6 +48,7 @@ public class UrlYahoo {
 			+"&f="+String.valueOf(enddate.getYear())
 			+"&g=d" // pour préciser que c'est hebdomadaire
 			+"&ignore=.csv";
+		System.out.println("adresse :"+urlAction);
 		
 		urlBenchmark="http://ichart.yahoo.com/table.csv?s=";
 		urlBenchmark += stock.getBenchId()
@@ -55,6 +60,7 @@ public class UrlYahoo {
 		+"&f="+String.valueOf(enddate.getYear())
 		+"&g=d" // pour préciser que c'est hebdomadaire
 		+"&ignore=.csv";
+		System.out.println("adresse :"+urlBenchmark);
 	}
 
 	public XMLGregorianCalendar getEnddate() {

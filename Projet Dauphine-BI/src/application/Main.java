@@ -6,7 +6,9 @@ import java.util.TreeMap;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
+//import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
+
+//import entity.Stock;
 
 import entityOutput.Indicator;
 import entityOutput.Indicators;
@@ -24,6 +26,7 @@ public class Main {
 		ReadXml readxml = new ReadXml();
 		Output output = new Output();
 		
+		final XMLGregorianCalendar startdate = (XMLGregorianCalendar) readxml.getInput().getStartdate().clone();
 		// Pour chaque stock
 		int i = 1;
 		for (entity.Stock stock : readxml.getInput().getStock())
@@ -33,7 +36,8 @@ public class Main {
 			File fileBenchmark = new File("dataSource/Benchmark"+String.valueOf(i)+".csv");
 			
 			// On récupère les adresses correspondantes sur le site yahoo.finance dans notre objet urlyahoo
-			UrlYahoo urlyahoo = new UrlYahoo(stock, readxml.getInput().getStartdate());			
+			UrlYahoo urlyahoo = new UrlYahoo(stock, startdate);
+			System.out.println(startdate);
 			
 			// On télécharge les fichiers
 			UrlHelper.downloadFile(urlyahoo.getUrlAction(), fileAction);
@@ -47,16 +51,17 @@ public class Main {
 			
 			// On récupère la liste des étapes
 			ArrayList<XMLGregorianCalendar> stepsDates = new ArrayList<XMLGregorianCalendar>();
+			//System.out.println(readxml.getInput().getStartdate());
 			stepsDates = Calculation.fixSteps(readxml.getInput().getStartdate(), urlyahoo.getEnddate(), 7);
 			
 			CompareDates cDates = new CompareDates(); // Comparateur de dates
 			// On récupère les données pour l'action
 			TreeMap<XMLGregorianCalendar, Double> valuesAction = new TreeMap<XMLGregorianCalendar, Double>(cDates);
-			valuesAction = Calculation.findStepsValues(stepsDates, datasAction, 7);
+			valuesAction = Calculation.findStepsValues(stepsDates, datasAction);
 			
 			// puis pour le Benchmark
 			TreeMap<XMLGregorianCalendar, Double> valuesBenchmark = new TreeMap<XMLGregorianCalendar, Double>(cDates);
-			valuesBenchmark = Calculation.findStepsValues(stepsDates, datasBenchmark, 7);
+			valuesBenchmark = Calculation.findStepsValues(stepsDates, datasBenchmark);
 			
 			// On a donc les données hebdomadaires pour l'action et le benchmark
 			// Maintenant, on souhaite les transformer en gardant leur évolution depuis une base de 100
@@ -76,11 +81,11 @@ public class Main {
 			ArrayList<ResultatIndicators> results = new ArrayList<ResultatIndicators>();
 			for(double param : params){
 				results.add(new ResultatIndicators(valuesActionAdjusted, valuesBenchmarkAdjusted, param));
-				System.out.println("Performance : " + results.get(results.size()-1).getPerformance());
-				System.out.println("Volatilite : " + results.get(results.size()-1).getVolatilite());
-				System.out.println("Information Ratio : " + results.get(results.size()-1).getInformationRatio());
-				System.out.println("Beta : " + results.get(results.size()-1).getBeta());
-				System.out.println("Alpha : " + results.get(results.size()-1).getAlpha());
+				//System.out.println("Performance : " + results.get(results.size()-1).getPerformance());
+				//System.out.println("Volatilite : " + results.get(results.size()-1).getVolatilite());
+				//System.out.println("Information Ratio : " + results.get(results.size()-1).getInformationRatio());
+				//System.out.println("Beta : " + results.get(results.size()-1).getBeta());
+				//System.out.println("Alpha : " + results.get(results.size()-1).getAlpha());
 			}
 			
 			entityOutput.Stock stockOut = new entityOutput.Stock();
@@ -111,7 +116,7 @@ public class Main {
 			
 			double te = Calculation.indicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, 12.0);
 			indicators.setTe(te);
-			System.out.println("Tracking Error : " + te);
+			//System.out.println("Tracking Error : " + te);
 			
 			Prices prices = new Prices();
 			stockOut.setPrices(prices);

@@ -15,11 +15,20 @@ import java.net.URLConnection;
  */
 public class UrlHelper {
 
+	/**
+	 * Télécharge un fichier depuis l'adresse indiquée
+	 * @param adresse
+	 */
 	public static void downloadFile(String adresse) {
 
 		downloadFile(adresse, null);
 	}
 
+	/**
+	 * Télécharge un fichier depuis l'adresse indiquée dans le fichier passé en paramètre
+	 * @param adresse
+	 * @param dest
+	 */
 	public static void downloadFile(String adresse, File dest) {
 		BufferedReader reader = null;
 		FileOutputStream fos = null;

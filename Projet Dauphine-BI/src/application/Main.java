@@ -106,7 +106,6 @@ public class Main {
 				
 				indicator.setAlpha(results.get(j).getAlpha());
 				indicator.setBeta(results.get(j).getBeta());
-				indicator.setIr(results.get(j).getInformationRatio());
 				indicator.setPerf(results.get(j).getPerformance());
 				indicator.setPeriod(results.get(j).getPeriod());
 				indicator.setVol(results.get(j).getVolatilite());
@@ -114,8 +113,10 @@ public class Main {
 				stockOut.getIndicators().getIndicator().add(indicator);
 			}
 			
-			double te = Calculation.indicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, 12.0);
+			double te = Calculation.indicatorTE(valuesActionAdjusted, valuesBenchmarkAdjusted, 13.0);
 			indicators.setTe(te);
+			double ir = Calculation.indicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, 13.0);
+			indicators.setIr(ir);
 			//System.out.println("Tracking Error : " + te);
 			
 			Prices prices = new Prices();

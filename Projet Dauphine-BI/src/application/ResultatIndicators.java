@@ -16,16 +16,7 @@ public class ResultatIndicators {
 	private String period;
 	private double beta;
 	private double alpha;
-	private double informationRatio;
-	
 
-	public double getInformationRatio() {
-		return informationRatio;
-	}
-
-	public void setInformationRatio(double informationRatio) {
-		this.informationRatio = informationRatio;
-	}
 
 	public ResultatIndicators(TreeMap<XMLGregorianCalendar, Double> valuesActionAdjusted, TreeMap<XMLGregorianCalendar, Double> valuesBenchmarkAdjusted, double p){
 		this.param = p;
@@ -105,7 +96,6 @@ public class ResultatIndicators {
 		this.volatilite = Calculation.indicatorVol(valuesActionAdjusted, param);
 		this.beta = Calculation.indicatorBeta(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
 		this.alpha = Calculation.indicatorAlpha(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
-		this.informationRatio = Calculation.indicatorRatioInformation(valuesActionAdjusted, valuesBenchmarkAdjusted, param);
 		this.period = (int)param +"M";
 	}
 }

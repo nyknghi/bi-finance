@@ -295,5 +295,4 @@ public class Calculation {
 		return indicatorPerfA(datas, param)-indicatorBeta(datas, datasB, param)*indicatorPerfA(datasB, param);	
 	}
 	
-	
 }

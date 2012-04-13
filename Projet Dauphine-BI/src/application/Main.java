@@ -2,6 +2,7 @@ package application;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.TreeMap;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -36,7 +37,7 @@ public class Main {
 			File fileBenchmark = new File("dataSource/Benchmark"+String.valueOf(i)+".csv");
 			
 			// On récupère les adresses correspondantes sur le site yahoo.finance dans notre objet urlyahoo
-			UrlYahoo urlyahoo = new UrlYahoo(stock, startdate);
+			UrlYahoo urlyahoo = new UrlYahoo(stock, (XMLGregorianCalendar) startdate.clone());
 			
 			// On télécharge les fichiers
 			UrlHelper.downloadFile(urlyahoo.getUrlAction(), fileAction);
@@ -51,7 +52,7 @@ public class Main {
 			// On récupère la liste des étapes
 			ArrayList<XMLGregorianCalendar> stepsDates = new ArrayList<XMLGregorianCalendar>();
 			//System.out.println(readxml.getInput().getStartdate());
-			stepsDates = Calculation.fixSteps(readxml.getInput().getStartdate(), urlyahoo.getEnddate(), 7);
+			stepsDates = Calculation.fixSteps((XMLGregorianCalendar) startdate.clone(), urlyahoo.getEnddate(), 7);
 			
 			CompareDates cDates = new CompareDates(); // Comparateur de dates
 			// On récupère les données pour l'action

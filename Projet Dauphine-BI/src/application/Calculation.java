@@ -70,6 +70,7 @@ public class Calculation {
 				int cpt = -1;
 				while(vFound == false && cpt > -10){
 					Duration duration;
+					//XMLGregorianCalendar stepDates_tmp = (XMLGregorianCalendar) stepDates.clone();
 					try {
 						duration = DatatypeFactory.newInstance().newDuration(-24*3600*1000);
 						stepDates.add(duration); // On retire un jour à la date actuelle

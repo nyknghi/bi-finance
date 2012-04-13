@@ -27,7 +27,7 @@ public class Calculation {
 	 */
 	public static ArrayList<XMLGregorianCalendar> fixSteps(XMLGregorianCalendar startdate, XMLGregorianCalendar enddate, int step){
 		ArrayList<XMLGregorianCalendar> stepDates = new ArrayList<XMLGregorianCalendar>(); // Liste des étapes 
-		stepDates.add(startdate);
+		stepDates.add((XMLGregorianCalendar) startdate.clone());
 		XMLGregorianCalendar date = (XMLGregorianCalendar) startdate.clone();
 		try {
 			Duration duration = DatatypeFactory.newInstance().newDuration(step*24*3600*1000);

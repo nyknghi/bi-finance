@@ -48,7 +48,6 @@ public class UrlYahoo {
 			+"&f="+String.valueOf(enddate.getYear())
 			+"&g=d" // pour préciser que c'est hebdomadaire
 			+"&ignore=.csv";
-		System.out.println("adresse :"+urlAction);
 		
 		urlBenchmark="http://ichart.yahoo.com/table.csv?s=";
 		urlBenchmark += stock.getBenchId()
@@ -60,7 +59,6 @@ public class UrlYahoo {
 		+"&f="+String.valueOf(enddate.getYear())
 		+"&g=d" // pour préciser que c'est hebdomadaire
 		+"&ignore=.csv";
-		System.out.println("adresse :"+urlBenchmark);
 	}
 
 	public XMLGregorianCalendar getEnddate() {

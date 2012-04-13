@@ -37,7 +37,6 @@ public class Main {
 			
 			// On récupère les adresses correspondantes sur le site yahoo.finance dans notre objet urlyahoo
 			UrlYahoo urlyahoo = new UrlYahoo(stock, startdate);
-			System.out.println(startdate);
 			
 			// On télécharge les fichiers
 			UrlHelper.downloadFile(urlyahoo.getUrlAction(), fileAction);
